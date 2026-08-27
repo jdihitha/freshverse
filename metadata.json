@@ -1,0 +1,6 @@
+{
+  "name": "FreshVerse",
+  "description": "Premium subscription-based fresh vegetable delivery platform for curated baskets.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
