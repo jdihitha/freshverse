@@ -114,10 +114,11 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
           </div>
         </Card>
 
-        <div className="flex justify-center gap-4 pt-2">
+        <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4 pt-2">
           <Button
             variant="primary"
             size="lg"
+            className="w-full sm:w-auto justify-center"
             onClick={() => onNavigate('/customer/orders')}
           >
             View Active Orders
@@ -125,6 +126,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
           <Button
             variant="outline"
             size="lg"
+            className="w-full sm:w-auto justify-center"
             onClick={() => onNavigate('/customer/dashboard')}
           >
             Return to Dashboard
@@ -135,10 +137,10 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 text-left">
+    <div className="max-w-6xl mx-auto space-y-6 sm:space-y-8 text-left">
       {/* Header */}
       <div>
-        <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
           Confirm Harvest Subscription & Checkout
         </h1>
         <p className="text-xs sm:text-sm text-[#2E2E2E]/70 mt-1">
@@ -146,7 +148,7 @@ export const CheckoutPage: React.FC<CheckoutPageProps> = ({ onNavigate }) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         {/* Left Column (7 cols): Address, Slot, Payment details */}
         <div className="lg:col-span-7 space-y-6">
           {/* Gated Community Delivery Address Card */}

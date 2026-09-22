@@ -24,30 +24,31 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const { plans, inventory } = useData();
 
   return (
-    <div className="space-y-20 pb-20">
+    <div className="space-y-12 sm:space-y-20 pb-12 sm:pb-20">
       {/* Hero Section */}
-      <section className="pt-8 sm:pt-14 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <section className="pt-6 sm:pt-14 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Left Text */}
-          <div className="lg:col-span-7 space-y-6 text-left">
+          <div className="lg:col-span-7 space-y-5 sm:space-y-6 text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#1F3D2B]/10 text-[#1F3D2B] text-xs font-semibold">
               <Sparkles className="w-3.5 h-3.5 text-[#8C6D23]" />
-              <span>Phase 1 Gated Community Subscription Service</span>
+              <span className="truncate">Phase 1 Gated Community Subscription Service</span>
             </div>
 
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#1F3D2B] leading-[1.12]">
+            <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-[#1F3D2B] leading-[1.12] break-words">
               Fresh vegetables, <br />
               <span className="italic font-normal text-[#C6A969]">delivered your way.</span>
             </h1>
 
-            <p className="text-base sm:text-lg text-[#2E2E2E]/80 max-w-xl leading-relaxed">
+            <p className="text-sm sm:text-lg text-[#2E2E2E]/80 max-w-xl leading-relaxed">
               Curated fresh vegetable baskets, delivered to your doorstep through a simple and flexible subscription. Harvested at dawn from certified organic farms, hand-graded, and brought quietly to your residence.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 pt-2">
               <Button
                 size="lg"
                 variant="primary"
+                className="w-full sm:w-auto justify-center"
                 onClick={() => onNavigate('/plans')}
                 rightIcon={<ArrowRight className="w-4 h-4" />}
               >
@@ -56,6 +57,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               <Button
                 size="lg"
                 variant="outline"
+                className="w-full sm:w-auto justify-center"
                 onClick={() => onNavigate('/how-it-works')}
               >
                 How It Works
@@ -63,38 +65,38 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Micro proof tags */}
-            <div className="pt-4 grid grid-cols-3 gap-4 border-t border-[#E8E3DA] max-w-lg">
+            <div className="pt-4 grid grid-cols-3 gap-2 sm:gap-4 border-t border-[#E8E3DA] max-w-lg">
               <div>
-                <p className="font-serif text-xl font-bold text-[#1F3D2B]">50+</p>
-                <p className="text-[11px] text-[#6E695F] mt-0.5">Enclave Subscribers</p>
+                <p className="font-serif text-lg sm:text-xl font-bold text-[#1F3D2B]">50+</p>
+                <p className="text-[10px] sm:text-[11px] text-[#6E695F] mt-0.5">Enclave Subscribers</p>
               </div>
               <div>
-                <p className="font-serif text-xl font-bold text-[#1F3D2B]">&lt; 12 hrs</p>
-                <p className="text-[11px] text-[#6E695F] mt-0.5">Farm-to-Door Time</p>
+                <p className="font-serif text-lg sm:text-xl font-bold text-[#1F3D2B]">&lt; 12 hrs</p>
+                <p className="text-[10px] sm:text-[11px] text-[#6E695F] mt-0.5">Farm-to-Door Time</p>
               </div>
               <div>
-                <p className="font-serif text-xl font-bold text-[#1F3D2B]">4.9 / 5.0</p>
-                <p className="text-[11px] text-[#6E695F] mt-0.5">Freshness Rating</p>
+                <p className="font-serif text-lg sm:text-xl font-bold text-[#1F3D2B]">4.9 / 5.0</p>
+                <p className="text-[10px] sm:text-[11px] text-[#6E695F] mt-0.5">Freshness Rating</p>
               </div>
             </div>
           </div>
 
           {/* Right Visual Produce Feature */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-[#E0DBD1] bg-white group">
+            <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-[#E0DBD1] bg-white group">
               <img
                 src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop&q=80"
                 alt="Curated fresh organic vegetable basket"
-                className="w-full h-[440px] object-cover transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-64 sm:h-[440px] object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1F3D2B]/90 via-[#1F3D2B]/20 to-transparent" />
               
-              <div className="absolute bottom-6 left-6 right-6 text-white space-y-2">
-                <div className="flex items-center gap-2">
+              <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 text-white space-y-1.5 sm:space-y-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <Badge variant="warning" size="sm">This Week's Curated Batch</Badge>
-                  <span className="text-xs text-[#F4F1EC]/80 font-medium">Sat 7:00 AM Dispatch</span>
+                  <span className="text-[11px] sm:text-xs text-[#F4F1EC]/80 font-medium">Sat 7:00 AM Dispatch</span>
                 </div>
-                <h3 className="font-serif text-xl font-bold">The Family Gourmet Harvest</h3>
+                <h3 className="font-serif text-lg sm:text-xl font-bold">The Family Gourmet Harvest</h3>
                 <p className="text-xs text-[#F4F1EC]/80 line-clamp-2">
                   14 varieties including crisp spinach, hydroponic butterhead lettuce, fresh broccoli crowns, and golden potatoes.
                 </p>
@@ -102,7 +104,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Floating Quality Stamp */}
-            <div className="absolute -top-4 -right-4 bg-white p-3.5 rounded-2xl shadow-lg border border-[#E8E3DA] hidden sm:flex items-center gap-3">
+            <div className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-lg border border-[#E8E3DA] hidden sm:flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl bg-[#A7C4A0]/30 text-[#1F3D2B] flex items-center justify-center font-bold">
                 <ShieldCheck className="w-5 h-5" />
               </div>
@@ -327,16 +329,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
       </section>
 
       {/* Freshness & Trust Section */}
-      <section className="px-4 sm:px-6 bg-[#1F3D2B] text-[#F4F1EC] py-16 rounded-3xl max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-6 space-y-6 text-left">
+      <section className="px-4 sm:px-6 bg-[#1F3D2B] text-[#F4F1EC] py-10 sm:py-16 rounded-2xl sm:rounded-3xl max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <div className="lg:col-span-6 space-y-5 sm:space-y-6 text-left">
             <span className="text-xs font-bold uppercase tracking-widest text-[#A7C4A0]">
               The Freshness Guarantee
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-white leading-tight">
+            <h2 className="font-serif text-2xl sm:text-4xl font-bold text-white leading-tight">
               Grown by responsible farmers, inspected with hospital-grade care
             </h2>
-            <p className="text-sm text-[#F4F1EC]/80 leading-relaxed">
+            <p className="text-xs sm:text-sm text-[#F4F1EC]/80 leading-relaxed">
               We eliminate wholesale middlemen. Our harvest schedules are synchronized directly with local family farms in Kanakapura, Sirsi, and Hosur.
             </p>
 
@@ -367,16 +369,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </div>
           </div>
 
-          <div className="lg:col-span-6 grid grid-cols-2 gap-4">
+          <div className="lg:col-span-6 grid grid-cols-2 gap-3 sm:gap-4">
             <img
               src="https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&auto=format&fit=crop&q=80"
               alt="Fresh carrots"
-              className="rounded-2xl h-48 w-full object-cover shadow-md"
+              className="rounded-xl sm:rounded-2xl h-36 sm:h-48 w-full object-cover shadow-md"
             />
             <img
               src="https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&auto=format&fit=crop&q=80"
               alt="Crisp spinach"
-              className="rounded-2xl h-48 w-full object-cover shadow-md mt-6"
+              className="rounded-xl sm:rounded-2xl h-36 sm:h-48 w-full object-cover shadow-md mt-4 sm:mt-6"
             />
           </div>
         </div>
@@ -384,17 +386,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
 
       {/* Final CTA */}
       <section className="px-4 sm:px-6 text-center">
-        <div className="max-w-3xl mx-auto space-y-6 bg-[#FAF8F5] p-10 sm:p-14 rounded-3xl border border-[#E8E3DA]">
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#1F3D2B]">
+        <div className="max-w-3xl mx-auto space-y-6 bg-[#FAF8F5] p-6 sm:p-14 rounded-2xl sm:rounded-3xl border border-[#E8E3DA]">
+          <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#1F3D2B]">
             Ready to make fresh eating easier?
           </h2>
-          <p className="text-sm text-[#2E2E2E]/70 max-w-lg mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-[#2E2E2E]/70 max-w-lg mx-auto leading-relaxed">
             Join your neighbors at Palm Grove Residency who receive farm-fresh, chemical-free produce every week.
           </p>
-          <div className="pt-2 flex justify-center gap-4">
+          <div className="pt-2 flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
             <Button
               size="lg"
               variant="primary"
+              className="w-full sm:w-auto justify-center"
               onClick={() => onNavigate('/register')}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
@@ -403,6 +406,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             <Button
               size="lg"
               variant="outline"
+              className="w-full sm:w-auto justify-center"
               onClick={() => onNavigate('/plans')}
             >
               Browse Plans

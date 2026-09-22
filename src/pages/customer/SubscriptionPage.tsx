@@ -43,11 +43,11 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
   };
 
   return (
-    <div className="space-y-8 text-left max-w-5xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
             Manage Resident Subscription
           </h1>
           <p className="text-xs sm:text-sm text-[#2E2E2E]/70 mt-1">
@@ -66,31 +66,32 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
 
       {/* Main Active Subscription Card */}
       <Card className="space-y-6" padding="lg">
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 pb-6 border-b border-[#F0EBE1]">
-          <div className="flex items-start gap-4">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 sm:gap-6 pb-6 border-b border-[#F0EBE1]">
+          <div className="flex items-start gap-3 sm:gap-4">
             <img
               src={currentPlan.imageUrl}
               alt={currentPlan.name}
-              className="w-24 h-24 rounded-2xl object-cover border border-[#E8E3DA] shrink-0"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl sm:rounded-2xl object-cover border border-[#E8E3DA] shrink-0"
             />
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <h2 className="font-serif text-2xl font-bold text-[#1F3D2B]">
+            <div className="space-y-1 min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="font-serif text-xl sm:text-2xl font-bold text-[#1F3D2B]">
                   {currentPlan.name}
                 </h2>
                 <Badge variant="sage" size="sm">{currentPlan.frequency}</Badge>
               </div>
-              <p className="text-xs text-[#8A847A]">{currentPlan.tagLine}</p>
-              <p className="font-serif text-xl font-bold text-[#1F3D2B] pt-1">
+              <p className="text-xs text-[#8A847A] truncate">{currentPlan.tagLine}</p>
+              <p className="font-serif text-lg sm:text-xl font-bold text-[#1F3D2B] pt-1">
                 ₹{currentPlan.price} <span className="text-xs font-normal text-[#6E695F]">/ delivery cycle</span>
               </p>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto">
             <Button
               variant="outline"
               size="sm"
+              className="w-full sm:w-auto justify-center"
               onClick={() => onNavigate('/plans')}
             >
               Switch Plan Tier
@@ -98,6 +99,7 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
             <Button
               variant="primary"
               size="sm"
+              className="w-full sm:w-auto justify-center"
               onClick={() => onNavigate('/customer/basket')}
             >
               Customize Vegetables
@@ -146,10 +148,10 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Skip Next Delivery Card */}
-            <div className="p-4 rounded-xl border border-[#E0DBD1] bg-[#FAF8F5] flex items-start justify-between gap-4">
+            <div className="p-3.5 sm:p-4 rounded-xl border border-[#E0DBD1] bg-[#FAF8F5] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-[#8C6D23]" />
+                  <Clock className="w-4 h-4 text-[#8C6D23] shrink-0" />
                   <h4 className="text-xs font-bold text-[#1F3D2B]">Skip Next Delivery</h4>
                 </div>
                 <p className="text-xs text-[#6E695F]">
@@ -164,6 +166,7 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
               <Button
                 variant={subscription?.isSkippedNext ? 'secondary' : 'outline'}
                 size="sm"
+                className="w-full sm:w-auto justify-center shrink-0"
                 onClick={toggleSkipNextDelivery}
               >
                 {subscription?.isSkippedNext ? 'Resume Delivery' : 'Skip Next'}
@@ -171,10 +174,10 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
             </div>
 
             {/* Pause Subscription Card */}
-            <div className="p-4 rounded-xl border border-[#E0DBD1] bg-[#FAF8F5] flex items-start justify-between gap-4">
+            <div className="p-3.5 sm:p-4 rounded-xl border border-[#E0DBD1] bg-[#FAF8F5] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <PauseCircle className="w-4 h-4 text-[#8C6D23]" />
+                  <PauseCircle className="w-4 h-4 text-[#8C6D23] shrink-0" />
                   <h4 className="text-xs font-bold text-[#1F3D2B]">Pause Entire Subscription</h4>
                 </div>
                 <p className="text-xs text-[#6E695F]">
@@ -190,6 +193,7 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
                 <Button
                   variant="primary"
                   size="sm"
+                  className="w-full sm:w-auto justify-center shrink-0"
                   onClick={handleResume}
                 >
                   Resume Now
@@ -198,6 +202,7 @@ export const SubscriptionPage: React.FC<SubscriptionPageProps> = ({ onNavigate }
                 <Button
                   variant="outline"
                   size="sm"
+                  className="w-full sm:w-auto justify-center shrink-0"
                   onClick={() => setIsPauseModalOpen(true)}
                 >
                   Pause Plan

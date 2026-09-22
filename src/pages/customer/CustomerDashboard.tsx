@@ -47,17 +47,17 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
   const swapsUsed = selectedItems.filter(i => i.isSwapped).length;
 
   return (
-    <div className="space-y-8 text-left">
+    <div className="space-y-6 sm:space-y-8 text-left">
       {/* Welcome Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-[#1F3D2B] to-[#2B543C] text-white p-6 sm:p-8 rounded-3xl shadow-sm">
-        <div className="space-y-1.5">
-          <div className="flex items-center gap-2">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-[#1F3D2B] to-[#2B543C] text-white p-4 sm:p-8 rounded-2xl sm:rounded-3xl shadow-sm">
+        <div className="space-y-1 sm:space-y-1.5">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs font-semibold text-[#A7C4A0] uppercase tracking-wider">
               {currentUser?.gatedCommunityUnit || 'Resident Subscriber'}
             </span>
             <Badge variant="gold" size="sm">Phase 1 Member</Badge>
           </div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold">
+          <h1 className="font-serif text-xl sm:text-3xl font-bold">
             Welcome back, {currentUser?.name.split(' ')[0]}!
           </h1>
           <p className="text-xs sm:text-sm text-[#F4F1EC]/80 max-w-xl leading-relaxed">
@@ -69,6 +69,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
           <Button
             variant="gold"
             size="md"
+            className="w-full sm:w-auto justify-center"
             onClick={() => onNavigate('/customer/basket')}
             rightIcon={<ArrowRight className="w-4 h-4" />}
           >
@@ -78,18 +79,18 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
       </div>
 
       {/* Grid of Main Context Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
         {/* Left Col (8 cols): Current Subscription & Basket Snapshot */}
-        <div className="lg:col-span-8 space-y-6">
+        <div className="lg:col-span-8 space-y-5 sm:space-y-6">
           {/* Subscription Status Card */}
           <Card className="space-y-5" padding="lg">
-            <div className="flex items-center justify-between pb-4 border-b border-[#F0EBE1]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#F0EBE1]">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1F3D2B]/10 text-[#1F3D2B] flex items-center justify-center font-bold">
+                <div className="w-10 h-10 rounded-xl bg-[#1F3D2B]/10 text-[#1F3D2B] flex items-center justify-center font-bold shrink-0">
                   <Calendar className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="font-serif text-lg font-bold text-[#1F3D2B]">
+                  <h2 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B]">
                     {currentPlan.name}
                   </h2>
                   <p className="text-xs text-[#8A847A]">
@@ -98,25 +99,25 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 {subscription?.status === 'active' ? (
-                  <Badge variant="success" dot>Active Subscription</Badge>
+                  <Badge variant="success" dot>Active</Badge>
                 ) : (
                   <Badge variant="warning" dot>Paused</Badge>
                 )}
                 {subscription?.isSkippedNext && (
-                  <Badge variant="danger">Next Delivery Skipped</Badge>
+                  <Badge variant="danger">Next Skipped</Badge>
                 )}
               </div>
             </div>
 
             {/* Delivery Date Highlight */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4 bg-[#FAF8F5] rounded-2xl border border-[#E8E3DA]">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 p-3.5 sm:p-4 bg-[#FAF8F5] rounded-xl sm:rounded-2xl border border-[#E8E3DA]">
               <div>
-                <span className="text-[11px] font-bold text-[#8A847A] uppercase tracking-wider block">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#8A847A] uppercase tracking-wider block">
                   Next Scheduled Delivery
                 </span>
-                <p className="font-serif text-lg font-bold text-[#1F3D2B] mt-0.5">
+                <p className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B] mt-0.5">
                   {subscription?.nextDeliveryDate ? new Date(subscription.nextDeliveryDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) : 'Saturday, Aug 29'}
                 </p>
                 <span className="text-[11px] text-[#6E695F]">
@@ -125,11 +126,11 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-[#8A847A] uppercase tracking-wider block">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#8A847A] uppercase tracking-wider block">
                   Customization Window
                 </span>
                 <p className="text-xs font-bold text-[#8C6D23] mt-1 flex items-center gap-1">
-                  <Clock className="w-3.5 h-3.5" /> Closes Fri, 8:00 PM
+                  <Clock className="w-3.5 h-3.5 shrink-0" /> Closes Fri, 8:00 PM
                 </p>
                 <span className="text-[11px] text-[#6E695F]">
                   {swapsUsed} of {currentPlan.maxSwapsAllowed} swaps utilized
@@ -137,19 +138,19 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
               </div>
 
               <div>
-                <span className="text-[11px] font-bold text-[#8A847A] uppercase tracking-wider block">
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#8A847A] uppercase tracking-wider block">
                   Quick Controls
                 </span>
                 <div className="flex gap-2 mt-1.5">
                   <button
                     onClick={toggleSkipNextDelivery}
-                    className="text-xs font-semibold px-2.5 py-1 bg-white hover:bg-black/5 rounded-lg border border-[#D8D1C5] text-[#2E2E2E] transition-colors cursor-pointer"
+                    className="text-xs font-semibold px-2.5 py-1.5 bg-white hover:bg-black/5 rounded-lg border border-[#D8D1C5] text-[#2E2E2E] transition-colors cursor-pointer"
                   >
                     {subscription?.isSkippedNext ? 'Undo Skip' : 'Skip Next'}
                   </button>
                   <button
                     onClick={() => updateSubscriptionStatus(subscription?.status === 'active' ? 'paused' : 'active')}
-                    className="text-xs font-semibold px-2.5 py-1 bg-white hover:bg-black/5 rounded-lg border border-[#D8D1C5] text-[#2E2E2E] transition-colors cursor-pointer"
+                    className="text-xs font-semibold px-2.5 py-1.5 bg-white hover:bg-black/5 rounded-lg border border-[#D8D1C5] text-[#2E2E2E] transition-colors cursor-pointer"
                   >
                     {subscription?.status === 'active' ? 'Pause' : 'Resume'}
                   </button>
@@ -162,7 +163,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <h4 className="font-serif text-sm font-bold text-[#1F3D2B]">
-                    Current Curated Basket ({selectedItems.length} items)
+                    Current Basket ({selectedItems.length} items)
                   </h4>
                   {extraItems.length > 0 && (
                     <Badge variant="sage" size="sm">+{extraItems.length} extras</Badge>
@@ -177,7 +178,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
                 {selectedItems.slice(0, 4).map((item, idx) => (
                   <div
                     key={idx}
@@ -204,9 +205,9 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
           {/* Active Order & Live Status */}
           {activeOrder && (
             <Card className="space-y-4" padding="lg">
-              <div className="flex items-center justify-between pb-3 border-b border-[#F0EBE1]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F0EBE1]">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-[#A7C4A0]/30 text-[#1F3D2B] flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-lg bg-[#A7C4A0]/30 text-[#1F3D2B] flex items-center justify-center shrink-0">
                     <Truck className="w-4 h-4" />
                   </div>
                   <div>
@@ -248,7 +249,8 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() => onNavigate('/customer/delivery')}
+                  className="w-full sm:w-auto justify-center"
+                  onClick={() => onNavigate('/customer/tracking')}
                   rightIcon={<ArrowRight className="w-3.5 h-3.5" />}
                 >
                   Track Live Progress
@@ -259,7 +261,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
         </div>
 
         {/* Right Col (4 cols): Quick Actions & Community Notifications */}
-        <div className="lg:col-span-4 space-y-6">
+        <div className="lg:col-span-4 space-y-5 sm:space-y-6">
           {/* Quick Actions Grid */}
           <Card className="space-y-4" padding="lg">
             <h3 className="font-serif text-base font-bold text-[#1F3D2B] pb-2 border-b border-[#F0EBE1]">
@@ -295,7 +297,7 @@ export const CustomerDashboard: React.FC<CustomerDashboardProps> = ({ onNavigate
               </button>
 
               <button
-                onClick={() => onNavigate('/customer/delivery')}
+                onClick={() => onNavigate('/customer/tracking')}
                 className="p-3 text-left bg-[#FAF8F5] hover:bg-[#1F3D2B] hover:text-white rounded-xl border border-[#E8E3DA] transition-all group cursor-pointer"
               >
                 <Truck className="w-4 h-4 text-[#8C6D23] group-hover:text-[#A7C4A0] mb-2" />

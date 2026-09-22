@@ -26,11 +26,11 @@ export const PlansPage: React.FC<PlansPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10 sm:space-y-16">
       {/* Header */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
+      <div className="text-center max-w-3xl mx-auto space-y-3 sm:space-y-4">
         <Badge variant="sage">Flexible Farm-Fresh Memberships</Badge>
-        <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[#1F3D2B]">
+        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#1F3D2B]">
           Choose the harvest basket that fits your home
         </h1>
         <p className="text-sm sm:text-base text-[#2E2E2E]/70 leading-relaxed">
@@ -124,7 +124,7 @@ export const PlansPage: React.FC<PlansPageProps> = ({ onNavigate }) => {
       </div>
 
       {/* Community FAQ / Policy Callout */}
-      <div className="bg-[#FAF8F5] p-8 sm:p-10 rounded-3xl border border-[#E8E3DA] grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+      <div className="bg-[#FAF8F5] p-5 sm:p-10 rounded-2xl sm:rounded-3xl border border-[#E8E3DA] grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
         <div className="space-y-2">
           <div className="w-8 h-8 rounded-lg bg-[#1F3D2B]/10 text-[#1F3D2B] flex items-center justify-center font-bold">
             <Sparkles className="w-4 h-4" />

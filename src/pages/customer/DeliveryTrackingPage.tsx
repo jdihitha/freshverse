@@ -86,11 +86,11 @@ export const DeliveryTrackingPage: React.FC<DeliveryTrackingPageProps> = ({ onNa
   };
 
   return (
-    <div className="space-y-8 text-left max-w-5xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
             Live Delivery Tracking
           </h1>
           <p className="text-xs sm:text-sm text-[#2E2E2E]/70 mt-1">
@@ -99,12 +99,12 @@ export const DeliveryTrackingPage: React.FC<DeliveryTrackingPageProps> = ({ onNa
         </div>
 
         {/* Order Selector Pill */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-[#8A847A]">Viewing:</span>
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <span className="text-xs font-semibold text-[#8A847A] shrink-0">Viewing:</span>
           <select
             value={selectedOrderId}
             onChange={(e) => setSelectedOrderId(e.target.value)}
-            className="text-xs font-bold bg-[#FAF8F5] border border-[#E0DBD1] rounded-xl p-2 text-[#1F3D2B] focus:outline-none focus:ring-2 focus:ring-[#1F3D2B]"
+            className="text-xs font-bold bg-[#FAF8F5] border border-[#E0DBD1] rounded-xl p-2 text-[#1F3D2B] focus:outline-none focus:ring-2 focus:ring-[#1F3D2B] w-full sm:w-auto"
           >
             {orders.map((o) => (
               <option key={o.id} value={o.id}>
@@ -116,13 +116,13 @@ export const DeliveryTrackingPage: React.FC<DeliveryTrackingPageProps> = ({ onNa
       </div>
 
       {selectedOrder && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left Col (7 cols): Timeline & Route Tracking */}
           <div className="lg:col-span-7 space-y-6">
             <Card className="space-y-6" padding="lg">
-              <div className="flex items-center justify-between pb-4 border-b border-[#F0EBE1]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-[#F0EBE1]">
                 <div>
-                  <h2 className="font-serif text-lg font-bold text-[#1F3D2B]">
+                  <h2 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B]">
                     Shipment Timeline
                   </h2>
                   <p className="text-xs text-[#8A847A]">Order #{selectedOrder.orderNumber}</p>
@@ -151,7 +151,7 @@ export const DeliveryTrackingPage: React.FC<DeliveryTrackingPageProps> = ({ onNa
                     Doorstep Delivery Photo Confirmation
                   </h3>
                 </div>
-                <div className="rounded-xl overflow-hidden border border-[#E8E3DA] h-64 bg-[#FAF8F5]">
+                <div className="rounded-xl overflow-hidden border border-[#E8E3DA] h-48 sm:h-64 bg-[#FAF8F5]">
                   <img
                     src={selectedDelivery.photoProofUrl}
                     alt="Doorstep delivery proof"

@@ -63,10 +63,10 @@ export const RatingsPage: React.FC<RatingsPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="space-y-8 text-left max-w-5xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-5xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
           Rate Your Harvest Baskets
         </h1>
         <p className="text-xs sm:text-sm text-[#2E2E2E]/70 mt-1">
@@ -74,11 +74,11 @@ export const RatingsPage: React.FC<RatingsPageProps> = ({ onNavigate }) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         {/* Rating Form (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           <Card className="space-y-5" padding="lg">
-            <h2 className="font-serif text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
+            <h2 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
               Submit Feedback for Recent Delivery
             </h2>
 
@@ -108,16 +108,16 @@ export const RatingsPage: React.FC<RatingsPageProps> = ({ onNavigate }) => {
               </div>
 
               {/* 3 Rating Dimensions */}
-              <div className="space-y-3 p-4 bg-[#FAF8F5] rounded-2xl border border-[#E8E3DA]">
-                <div className="flex items-center justify-between">
+              <div className="space-y-3 p-3.5 sm:p-4 bg-[#FAF8F5] rounded-xl sm:rounded-2xl border border-[#E8E3DA]">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
                   <span className="font-semibold text-[#1F3D2B]">Produce Freshness & Crispness:</span>
                   <RatingStars rating={freshnessScore} onRate={setFreshnessScore} size="md" />
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
                   <span className="font-semibold text-[#1F3D2B]">Packaging & Hygiene:</span>
                   <RatingStars rating={packagingScore} onRate={setPackagingScore} size="md" />
                 </div>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
                   <span className="font-semibold text-[#1F3D2B]">Delivery Punctuality:</span>
                   <RatingStars rating={deliveryScore} onRate={setDeliveryScore} size="md" />
                 </div>

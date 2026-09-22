@@ -45,11 +45,11 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
   };
 
   return (
-    <div className="space-y-8 text-left max-w-4xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
             Notifications & Harvest Alerts
           </h1>
           <p className="text-xs sm:text-sm text-[#2E2E2E]/70 mt-1">
@@ -60,7 +60,8 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
         <Button
           variant="outline"
           size="sm"
-          onClick={markAllNotificationsRead}
+          className="w-full sm:w-auto justify-center"
+          onClick={() => markAllNotificationsRead(currentUser?.id)}
           leftIcon={<CheckCheck className="w-4 h-4" />}
         >
           Mark All as Read
@@ -96,16 +97,16 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
           filteredNotifs.map((notif) => (
             <Card
               key={notif.id}
-              className={`flex items-start justify-between gap-4 transition-all ${
+              className={`flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 transition-all ${
                 !notif.isRead ? 'bg-[#FAF6EC] border-[#C6A969]/40' : 'bg-white'
               }`}
               padding="md"
             >
-              <div className="flex items-start gap-3.5 text-xs min-w-0">
+              <div className="flex items-start gap-3.5 text-xs min-w-0 w-full sm:w-auto">
                 <div className="w-9 h-9 rounded-xl bg-white border border-[#E0DBD1] flex items-center justify-center shrink-0">
                   {getNotifIcon(notif.type)}
                 </div>
-                <div className="space-y-1 min-w-0">
+                <div className="space-y-1 min-w-0 flex-1">
                   <div className="flex items-center gap-2">
                     <h4 className="font-bold text-[#1F3D2B] truncate">{notif.title}</h4>
                     {!notif.isRead && (
@@ -119,7 +120,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0">
+              <div className="flex items-center gap-2 self-end sm:self-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#F0EBE1] w-full sm:w-auto justify-end">
                 {notif.actionUrl && (
                   <Button
                     size="sm"
@@ -136,7 +137,7 @@ export const NotificationsPage: React.FC<NotificationsPageProps> = ({ onNavigate
                 {!notif.isRead && (
                   <button
                     onClick={() => markNotificationRead(notif.id)}
-                    className="text-[11px] text-[#8A847A] hover:text-[#1F3D2B] font-medium cursor-pointer"
+                    className="text-[11px] text-[#8A847A] hover:text-[#1F3D2B] font-medium cursor-pointer px-2 py-1"
                   >
                     Dismiss
                   </button>

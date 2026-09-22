@@ -12,11 +12,11 @@ export const AboutPage: React.FC<AboutPageProps> = () => {
   const { suppliers } = useData();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-16">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10 sm:space-y-16">
       {/* Story Header */}
-      <div className="max-w-3xl mx-auto text-center space-y-4">
+      <div className="max-w-3xl mx-auto text-center space-y-3 sm:space-y-4">
         <Badge variant="sage">Our Philosophy & Origins</Badge>
-        <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[#1F3D2B]">
+        <h1 className="font-serif text-3xl sm:text-5xl font-bold text-[#1F3D2B]">
           Rooted in respect for soil, farmers, and family meals
         </h1>
         <p className="text-sm sm:text-base text-[#2E2E2E]/80 leading-relaxed">
@@ -25,22 +25,22 @@ export const AboutPage: React.FC<AboutPageProps> = () => {
       </div>
 
       {/* Hero Image Collage */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="rounded-2xl overflow-hidden h-72 shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+        <div className="rounded-xl sm:rounded-2xl overflow-hidden h-48 sm:h-72 shadow-md">
           <img
             src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=600&auto=format&fit=crop&q=80"
             alt="Organic lush field"
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="rounded-2xl overflow-hidden h-72 shadow-md">
+        <div className="rounded-xl sm:rounded-2xl overflow-hidden h-48 sm:h-72 shadow-md">
           <img
             src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=600&auto=format&fit=crop&q=80"
             alt="Freshly harvested spinach"
             className="w-full h-full object-cover"
           />
         </div>
-        <div className="rounded-2xl overflow-hidden h-72 shadow-md">
+        <div className="rounded-xl sm:rounded-2xl overflow-hidden h-48 sm:h-72 shadow-md">
           <img
             src="https://images.unsplash.com/photo-1595974482597-4b8da8879bc5?w=600&auto=format&fit=crop&q=80"
             alt="Farmer in organic farm"

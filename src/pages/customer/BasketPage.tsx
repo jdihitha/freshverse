@@ -76,12 +76,12 @@ export const BasketPage: React.FC<BasketPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="space-y-8 text-left max-w-6xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-6xl mx-auto">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
               Customize Your Harvest Basket
             </h1>
             <Badge variant="sage">{currentPlan.name}</Badge>
@@ -91,10 +91,11 @@ export const BasketPage: React.FC<BasketPageProps> = ({ onNavigate }) => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 w-full sm:w-auto">
           <Button
             variant="primary"
             size="lg"
+            className="w-full sm:w-auto justify-center"
             onClick={() => onNavigate('/customer/checkout')}
             rightIcon={<ArrowRight className="w-4 h-4" />}
           >
@@ -144,9 +145,9 @@ export const BasketPage: React.FC<BasketPageProps> = ({ onNavigate }) => {
         {/* Left Col (8 cols): Selected Curated Basket Items */}
         <div className="lg:col-span-8 space-y-6">
           <Card className="space-y-4" padding="lg">
-            <div className="flex items-center justify-between pb-3 border-b border-[#F0EBE1]">
-              <div className="flex items-center gap-2">
-                <h2 className="font-serif text-lg font-bold text-[#1F3D2B]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F0EBE1]">
+              <div className="flex items-center gap-2 flex-wrap">
+                <h2 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B]">
                   Included Basket Items ({selectedItems.length} items)
                 </h2>
                 <span className="text-xs text-[#8A847A]">({currentPlan.basketSizeWeight})</span>

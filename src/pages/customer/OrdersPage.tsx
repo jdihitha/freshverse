@@ -48,11 +48,11 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="space-y-8 text-left max-w-6xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-6xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
             Orders & Delivery History
           </h1>
           <p className="text-xs sm:text-sm text-[#2E2E2E]/70 mt-1">
@@ -62,6 +62,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ onNavigate }) => {
 
         <Button
           variant="outline"
+          className="w-full sm:w-auto justify-center"
           onClick={() => onNavigate('/customer/basket')}
         >
           View Upcoming Basket
@@ -73,12 +74,12 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ onNavigate }) => {
         {orders.map((order) => (
           <Card key={order.id} className="space-y-4" padding="lg">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[#F0EBE1]">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#1F3D2B]/10 text-[#1F3D2B] flex items-center justify-center font-bold">
+              <div className="flex items-start sm:items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-[#1F3D2B]/10 text-[#1F3D2B] flex items-center justify-center font-bold shrink-0 mt-0.5 sm:mt-0">
                   <Package className="w-5 h-5" />
                 </div>
                 <div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-serif text-base font-bold text-[#1F3D2B]">
                       Order #{order.orderNumber}
                     </h3>
@@ -90,7 +91,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center justify-between sm:justify-end gap-3 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-[#F0EBE1]">
                 <span className="font-serif text-lg font-bold text-[#1F3D2B]">
                   ₹{order.totalAmount}
                 </span>
@@ -127,17 +128,18 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ onNavigate }) => {
             </div>
 
             {/* Bottom Actions Bar */}
-            <div className="pt-3 border-t border-[#F0EBE1] flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div className="pt-3 border-t border-[#F0EBE1] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
               <span className="text-[#6E695F]">
                 Drop-off location: <strong>{order.gatedCommunityUnit}</strong>
               </span>
 
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 {order.status !== 'delivered' && (
                   <Button
                     size="sm"
                     variant="primary"
-                    onClick={() => onNavigate('/customer/delivery')}
+                    className="w-full sm:w-auto justify-center"
+                    onClick={() => onNavigate('/customer/tracking')}
                     leftIcon={<Truck className="w-3.5 h-3.5" />}
                   >
                     Track Delivery
@@ -149,6 +151,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ onNavigate }) => {
                     <Button
                       size="sm"
                       variant="outline"
+                      className="w-full sm:w-auto justify-center"
                       onClick={() => onNavigate('/customer/ratings')}
                       leftIcon={<Star className="w-3.5 h-3.5 text-[#C6A969]" />}
                     >
@@ -157,6 +160,7 @@ export const OrdersPage: React.FC<OrdersPageProps> = ({ onNavigate }) => {
                     <Button
                       size="sm"
                       variant="ghost"
+                      className="w-full sm:w-auto justify-center"
                       onClick={() => onNavigate('/customer/complaints')}
                       leftIcon={<AlertCircle className="w-3.5 h-3.5 text-[#8C6D23]" />}
                     >

@@ -1,63 +1,168 @@
-import React, { useState } from 'react';
-import { Sprout, Lock, Mail, ArrowRight, Shield, User, Package, Truck, Tractor, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Sprout, Lock, Mail, ArrowRight, Home, Hash, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { UserRole } from '../../types';
 import { Button } from '../../components/common/Button';
 import { Card } from '../../components/common/Card';
-import { Badge } from '../../components/common/Badge';
 
 interface LoginPageProps {
   onNavigate: (path: string) => void;
 }
 
+// RFC 5322 compatible email validation pattern
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
 export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
-  const { login, demoUsers, switchRole } = useAuth();
-  const [email, setEmail] = useState('aarav.sharma@example.com');
-  const [password, setPassword] = useState('password123');
+  const { login, currentUser, isAuthenticated } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [houseName, setHouseName] = useState('');
+  const [roomNumber, setRoomNumber] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const getDashboardPath = (role: UserRole) => {
     switch (role) {
-      case 'admin': return '/admin/dashboard';
-      case 'packing': return '/packing/dashboard';
-      case 'delivery': return '/delivery/dashboard';
-      case 'supplier': return '/supplier/dashboard';
+      case 'admin':
+        return '/admin/dashboard';
+      case 'packing':
+        return '/packing/dashboard';
+      case 'delivery':
+        return '/delivery/dashboard';
+      case 'supplier':
+        return '/supplier/dashboard';
       case 'customer':
       default:
         return '/customer/dashboard';
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      setError('Please enter your email address');
+  // If already authenticated, redirect to the user's role dashboard
+  useEffect(() => {
+    if (isAuthenticated && currentUser) {
+      onNavigate(getDashboardPath(currentUser.role));
+    }
+  }, [isAuthenticated, currentUser, onNavigate]);
+
+  const handleHouseNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    // Accepts text only (letters and spaces)
+    if (val !== '' && !/^[a-zA-Z\s]*$/.test(val)) {
+      setError('House name must contain only letters');
       return;
     }
-    setError('');
-    setLoading(true);
-    try {
-      const res = await login(email, password);
-      if (res.success) {
-        // Find role of logging in user
-        const matched = demoUsers.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
-        const role = matched ? matched.role : 'customer';
-        onNavigate(getDashboardPath(role));
-      } else {
-        setError(res.error || 'Invalid credentials');
-      }
-    } finally {
-      setLoading(false);
+    // Reasonable character limit (maximum 50 characters, do not allow extra characters beyond limit)
+    if (val.length > 50) {
+      setError('Maximum 50 characters allowed');
+      return;
+    }
+    setHouseName(val);
+    if (
+      error === 'House name is required' ||
+      error === 'House name must contain only letters' ||
+      error === 'Maximum 50 characters allowed'
+    ) {
+      setError('');
     }
   };
 
-  const handleQuickRoleLogin = (role: UserRole) => {
-    const user = demoUsers.find(u => u.role === role);
-    if (user) {
-      setEmail(user.email);
-      switchRole(role);
-      onNavigate(getDashboardPath(role));
+  const handleRoomNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    // Accepts only numbers (digits 0-9)
+    if (val !== '' && !/^\d+$/.test(val)) {
+      setError('House/Room number must contain only numbers');
+      return;
+    }
+    // Maximum 10 digits, do not allow extra characters beyond limit
+    if (val.length > 10) {
+      setError('Maximum 10 characters allowed');
+      return;
+    }
+    setRoomNumber(val);
+    if (
+      error === 'House/Room number is required' ||
+      error === 'House/Room number must contain only numbers' ||
+      error === 'Maximum 10 characters allowed'
+    ) {
+      setError('');
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // 1. Email validation: trim unnecessary spaces before validation, require valid format
+    const cleanEmail = email.trim();
+    if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
+      setError('Invalid email format');
+      return;
+    }
+    if (cleanEmail.length > 100) {
+      setError('Maximum 100 characters allowed');
+      return;
+    }
+
+    // 2. Password validation: MUST remain case-sensitive, do not trim or modify
+    if (!password) {
+      setError('Password is required');
+      return;
+    }
+    if (password.length > 128) {
+      setError('Maximum 128 characters allowed');
+      return;
+    }
+
+    // 3. House Name validation: text only (letters and spaces), max 50 chars
+    const cleanHouseName = houseName.trim();
+    if (!cleanHouseName) {
+      setError('House name is required');
+      return;
+    }
+    if (!/^[a-zA-Z\s]+$/.test(cleanHouseName)) {
+      setError('House name must contain only letters');
+      return;
+    }
+    if (cleanHouseName.length > 50) {
+      setError('Maximum 50 characters allowed');
+      return;
+    }
+
+    // 4. House / Room Number validation: strict digits only, max 10 characters
+    const cleanRoomNumber = roomNumber.trim();
+    if (!cleanRoomNumber) {
+      setError('House/Room number is required');
+      return;
+    }
+    if (!/^\d+$/.test(cleanRoomNumber)) {
+      setError('House/Room number must contain only numbers');
+      return;
+    }
+    if (cleanRoomNumber.length > 10) {
+      setError('Maximum 10 characters allowed');
+      return;
+    }
+
+    setError('');
+    setLoading(true);
+
+    try {
+      // Supabase email/password login with exact case-sensitive password
+      const res = await login(cleanEmail, password, {
+        houseName: cleanHouseName,
+        roomNumber: cleanRoomNumber
+      });
+
+      if (res.success) {
+        const role = res.role || currentUser?.role || 'customer';
+        onNavigate(getDashboardPath(role));
+      } else {
+        setError(res.error || 'Invalid email or password');
+      }
+    } catch (err: any) {
+      setError(err?.message || 'Invalid email or password');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,108 +179,139 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
         </p>
       </div>
 
-      {/* 1-Click Role Switcher Demo Cards */}
-      <Card className="text-left space-y-3 bg-[#FAF8F5] border border-[#DDD7CC]" padding="md">
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-[#8C6D23]">
-            Instant Role Test (Phase 1 MVP)
-          </span>
-          <Badge variant="sage" size="sm">5 Roles Available</Badge>
-        </div>
-        <p className="text-xs text-[#6E695F]">
-          Click any role below to immediately enter its dedicated dashboard:
-        </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-          <button
-            type="button"
-            onClick={() => handleQuickRoleLogin('customer')}
-            className="flex items-center gap-2 p-2.5 rounded-xl bg-white hover:bg-[#1F3D2B] hover:text-white text-[#1F3D2B] border border-[#E0DBD1] text-xs font-semibold transition-all cursor-pointer shadow-2xs"
-          >
-            <User className="w-4 h-4 text-[#8C6D23]" />
-            <span>Resident</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickRoleLogin('admin')}
-            className="flex items-center gap-2 p-2.5 rounded-xl bg-white hover:bg-[#1F3D2B] hover:text-white text-[#1F3D2B] border border-[#E0DBD1] text-xs font-semibold transition-all cursor-pointer shadow-2xs"
-          >
-            <Shield className="w-4 h-4 text-[#8C6D23]" />
-            <span>Admin</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickRoleLogin('packing')}
-            className="flex items-center gap-2 p-2.5 rounded-xl bg-white hover:bg-[#1F3D2B] hover:text-white text-[#1F3D2B] border border-[#E0DBD1] text-xs font-semibold transition-all cursor-pointer shadow-2xs"
-          >
-            <Package className="w-4 h-4 text-[#8C6D23]" />
-            <span>Packing</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickRoleLogin('delivery')}
-            className="flex items-center gap-2 p-2.5 rounded-xl bg-white hover:bg-[#1F3D2B] hover:text-white text-[#1F3D2B] border border-[#E0DBD1] text-xs font-semibold transition-all cursor-pointer shadow-2xs"
-          >
-            <Truck className="w-4 h-4 text-[#8C6D23]" />
-            <span>Delivery</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickRoleLogin('supplier')}
-            className="flex items-center gap-2 p-2.5 rounded-xl bg-white hover:bg-[#1F3D2B] hover:text-white text-[#1F3D2B] border border-[#E0DBD1] text-xs font-semibold transition-all cursor-pointer shadow-2xs sm:col-span-2"
-          >
-            <Tractor className="w-4 h-4 text-[#8C6D23]" />
-            <span>Organic Supplier (Farmer)</span>
-          </button>
-        </div>
-      </Card>
-
       {/* Main Login Form */}
       <Card className="text-left" padding="lg">
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           {error && (
-            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
-              <span>{error}</span>
+            <div
+              id="login-error-alert"
+              role="alert"
+              className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-xs flex items-center gap-2"
+            >
+              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+              <span className="font-medium">{error}</span>
             </div>
           )}
 
+          {/* 1. Email / Gmail */}
           <div>
-            <label className="block text-xs font-bold text-[#1F3D2B] uppercase tracking-wider mb-1.5">
-              Email Address
+            <label
+              htmlFor="login-email"
+              className="block text-xs font-bold text-[#1F3D2B] uppercase tracking-wider mb-1.5"
+            >
+              Email / Gmail
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-[#8A847A] absolute left-3.5 top-3" />
               <input
+                id="login-email"
                 type="email"
                 required
+                maxLength={100}
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="name@example.com"
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (error === 'Invalid email format' || error === 'Maximum 100 characters allowed') {
+                    setError('');
+                  }
+                }}
+                placeholder="user@gmail.com"
                 className="w-full pl-10 pr-4 py-2.5 text-sm bg-[#FAF8F5] border border-[#E0DBD1] rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3D2B] transition-all"
               />
             </div>
           </div>
 
+          {/* 2. Password (strictly case-sensitive, with visibility toggle) */}
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-[#1F3D2B] uppercase tracking-wider">
-                Password
-              </label>
-              <span className="text-xs text-[#8A847A]">Any password for demo</span>
-            </div>
+            <label
+              htmlFor="login-password"
+              className="block text-xs font-bold text-[#1F3D2B] uppercase tracking-wider mb-1.5"
+            >
+              Password
+            </label>
             <div className="relative">
               <Lock className="w-4 h-4 text-[#8A847A] absolute left-3.5 top-3" />
               <input
-                type="password"
+                id="login-password"
+                type={showPassword ? 'text' : 'password'}
+                required
+                maxLength={128}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="••••••••"
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (error === 'Password is required' || error === 'Maximum 128 characters allowed') {
+                    setError('');
+                  }
+                }}
+                placeholder="Enter your password"
+                className="w-full pl-10 pr-10 py-2.5 text-sm bg-[#FAF8F5] border border-[#E0DBD1] rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3D2B] transition-all"
+              />
+              <button
+                id="login-password-visibility-toggle"
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-2.5 p-1 text-[#8A847A] hover:text-[#1F3D2B] focus:outline-none transition-colors cursor-pointer"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          {/* 3. House Name (Text field, allows letters/spaces/house-name characters, max 50) */}
+          <div>
+            <label
+              htmlFor="login-house-name"
+              className="block text-xs font-bold text-[#1F3D2B] uppercase tracking-wider mb-1.5"
+            >
+              House Name
+            </label>
+            <div className="relative">
+              <Home className="w-4 h-4 text-[#8A847A] absolute left-3.5 top-3" />
+              <input
+                id="login-house-name"
+                type="text"
+                required
+                maxLength={50}
+                value={houseName}
+                onChange={handleHouseNameChange}
+                placeholder="e.g. Palm Grove Villa"
+                className="w-full pl-10 pr-4 py-2.5 text-sm bg-[#FAF8F5] border border-[#E0DBD1] rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3D2B] transition-all"
+              />
+            </div>
+          </div>
+
+          {/* 4. House / Room Number (Strict digits only, max 10 characters) */}
+          <div>
+            <label
+              htmlFor="login-room-number"
+              className="block text-xs font-bold text-[#1F3D2B] uppercase tracking-wider mb-1.5"
+            >
+              House / Room Number
+            </label>
+            <div className="relative">
+              <Hash className="w-4 h-4 text-[#8A847A] absolute left-3.5 top-3" />
+              <input
+                id="login-room-number"
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                required
+                maxLength={10}
+                value={roomNumber}
+                onChange={handleRoomNumberChange}
+                placeholder="e.g. 402"
                 className="w-full pl-10 pr-4 py-2.5 text-sm bg-[#FAF8F5] border border-[#E0DBD1] rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3D2B] transition-all"
               />
             </div>
           </div>
 
           <Button
+            id="login-submit-button"
             type="submit"
             size="lg"
             variant="primary"
@@ -186,16 +322,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
             Sign In to Account
           </Button>
         </form>
-
-        <div className="mt-6 pt-6 border-t border-[#F0EBE1] text-center text-xs text-[#6E695F]">
-          New to FreshVerse in your community?{' '}
-          <button
-            onClick={() => onNavigate('/register')}
-            className="font-bold text-[#1F3D2B] hover:underline cursor-pointer"
-          >
-            Create Resident Subscription
-          </button>
-        </div>
       </Card>
     </div>
   );

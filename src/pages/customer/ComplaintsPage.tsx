@@ -50,10 +50,10 @@ export const ComplaintsPage: React.FC<ComplaintsPageProps> = ({ onNavigate }) =>
   };
 
   return (
-    <div className="space-y-8 text-left max-w-5xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-5xl mx-auto">
       {/* Header */}
       <div>
-        <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
           Freshness Guarantee & Issue Reporting
         </h1>
         <p className="text-xs sm:text-sm text-[#2E2E2E]/70 mt-1">
@@ -61,13 +61,13 @@ export const ComplaintsPage: React.FC<ComplaintsPageProps> = ({ onNavigate }) =>
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
         {/* Left Column (5 cols): Complaint Form */}
         <div className="lg:col-span-5 space-y-6">
           <Card className="space-y-4" padding="lg">
             <div className="flex items-center gap-2 pb-2 border-b border-[#F0EBE1]">
               <AlertCircle className="w-5 h-5 text-[#8C6D23]" />
-              <h2 className="font-serif text-lg font-bold text-[#1F3D2B]">
+              <h2 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B]">
                 File a Report
               </h2>
             </div>

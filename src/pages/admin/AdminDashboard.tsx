@@ -62,12 +62,12 @@ export const AdminDashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 text-left max-w-7xl mx-auto">
+    <div className="space-y-6 sm:space-y-8 text-left max-w-7xl mx-auto">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
         <div>
-          <div className="flex items-center gap-2">
-            <h1 className="font-serif text-3xl font-bold text-[#1F3D2B]">
+          <div className="flex items-center gap-2 flex-wrap">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1F3D2B]">
               Community Operations Hub
             </h1>
             <Badge variant="gold">Admin Master</Badge>
@@ -77,13 +77,13 @@ export const AdminDashboard: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <Badge variant="sage" size="md">Harvest Cycle: Aug 26, 2026</Badge>
         </div>
       </div>
 
       {/* KPI Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
         <Card className="space-y-2" padding="md">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-[#8A847A] uppercase tracking-wider">Subscribers</span>
@@ -131,11 +131,11 @@ export const AdminDashboard: React.FC = () => {
         </Card>
       </div>
 
-      {/* Tabs Navigation */}
-      <div className="flex flex-wrap gap-2 border-b border-[#E8E3DA] pb-2">
+      {/* Tabs Navigation (Horizontally scrollable on mobile) */}
+      <div className="flex overflow-x-auto no-scrollbar gap-2 border-b border-[#E8E3DA] pb-2 -mx-2 px-2 sm:mx-0 sm:px-0">
         <button
           onClick={() => setActiveTab('overview')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'overview'
               ? 'bg-[#1F3D2B] text-white'
               : 'bg-[#FAF8F5] text-[#6E695F] hover:text-[#1F3D2B]'
@@ -145,7 +145,7 @@ export const AdminDashboard: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab('subscribers')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'subscribers'
               ? 'bg-[#1F3D2B] text-white'
               : 'bg-[#FAF8F5] text-[#6E695F] hover:text-[#1F3D2B]'
@@ -155,7 +155,7 @@ export const AdminDashboard: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab('inventory')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'inventory'
               ? 'bg-[#1F3D2B] text-white'
               : 'bg-[#FAF8F5] text-[#6E695F] hover:text-[#1F3D2B]'
@@ -165,7 +165,7 @@ export const AdminDashboard: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab('complaints')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'complaints'
               ? 'bg-[#1F3D2B] text-white'
               : 'bg-[#FAF8F5] text-[#6E695F] hover:text-[#1F3D2B]'
@@ -175,7 +175,7 @@ export const AdminDashboard: React.FC = () => {
         </button>
         <button
           onClick={() => setActiveTab('orders')}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all cursor-pointer ${
             activeTab === 'orders'
               ? 'bg-[#1F3D2B] text-white'
               : 'bg-[#FAF8F5] text-[#6E695F] hover:text-[#1F3D2B]'
@@ -187,12 +187,12 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Tab: Overview */}
       {activeTab === 'overview' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           {/* Left Col (7 cols): Today's Dispatch Status */}
           <div className="lg:col-span-7 space-y-6">
             <Card className="space-y-4" padding="lg">
-              <div className="flex items-center justify-between pb-3 border-b border-[#F0EBE1]">
-                <h3 className="font-serif text-lg font-bold text-[#1F3D2B]">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-[#F0EBE1]">
+                <h3 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B]">
                   Live Enclave Morning Dispatch
                 </h3>
                 <Badge variant="warning" dot>Run #PG-01 Active</Badge>
@@ -202,10 +202,10 @@ export const AdminDashboard: React.FC = () => {
                 {orders.map((o) => (
                   <div
                     key={o.id}
-                    className="p-3.5 bg-[#FAF8F5] border border-[#E8E3DA] rounded-xl flex items-center justify-between gap-3 text-xs"
+                    className="p-3.5 bg-[#FAF8F5] border border-[#E8E3DA] rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 text-xs"
                   >
                     <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-bold text-[#1F3D2B]">{o.gatedCommunityUnit}</span>
                         <span className="text-[#8A847A]">({o.customerName})</span>
                       </div>
@@ -214,7 +214,7 @@ export const AdminDashboard: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-[#E8E3DA]">
                       <Badge
                         variant={
                           o.status === 'delivered' ? 'success' : o.status === 'out_for_delivery' ? 'warning' : 'secondary'
@@ -244,7 +244,7 @@ export const AdminDashboard: React.FC = () => {
           {/* Right Col (5 cols): Partner Farms Status */}
           <div className="lg:col-span-5 space-y-6">
             <Card className="space-y-4" padding="lg">
-              <h3 className="font-serif text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
+              <h3 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
                 Partner Farms Yield
               </h3>
 
@@ -273,8 +273,8 @@ export const AdminDashboard: React.FC = () => {
       {/* Tab: Subscribers */}
       {activeTab === 'subscribers' && (
         <Card className="space-y-4" padding="lg">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-[#F0EBE1]">
-            <h3 className="font-serif text-lg font-bold text-[#1F3D2B]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pb-3 border-b border-[#F0EBE1]">
+            <h3 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B]">
               Palm Grove Enclave Roster
             </h3>
             <div className="relative w-full sm:w-64">
@@ -289,27 +289,27 @@ export const AdminDashboard: React.FC = () => {
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+          <div className="overflow-x-auto -mx-2 sm:mx-0 px-2 sm:px-0">
+            <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
                 <tr className="text-[#8A847A] border-b border-[#F0EBE1]">
-                  <th className="pb-3 font-semibold">Resident Name</th>
-                  <th className="pb-3 font-semibold">Gated Unit</th>
-                  <th className="pb-3 font-semibold">Plan</th>
-                  <th className="pb-3 font-semibold">Frequency</th>
-                  <th className="pb-3 font-semibold">Status</th>
-                  <th className="pb-3 font-semibold">Swaps Used</th>
+                  <th className="pb-3 font-semibold pr-4">Resident Name</th>
+                  <th className="pb-3 font-semibold pr-4">Gated Unit</th>
+                  <th className="pb-3 font-semibold pr-4">Plan</th>
+                  <th className="pb-3 font-semibold pr-4">Frequency</th>
+                  <th className="pb-3 font-semibold pr-4">Status</th>
+                  <th className="pb-3 font-semibold pr-4">Swaps Used</th>
                   <th className="pb-3 font-semibold text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F4F1EC]">
                 <tr>
-                  <td className="py-3 font-bold text-[#1F3D2B]">Aarav Sharma</td>
-                  <td className="py-3 font-medium">Villa 42, Palm Grove</td>
-                  <td className="py-3">Gourmet Family Feast</td>
-                  <td className="py-3">Weekly</td>
-                  <td className="py-3"><Badge variant="success" size="sm">Active</Badge></td>
-                  <td className="py-3">1 / 4</td>
+                  <td className="py-3 font-bold text-[#1F3D2B] pr-4">Aarav Sharma</td>
+                  <td className="py-3 font-medium pr-4">Villa 42, Palm Grove</td>
+                  <td className="py-3 pr-4">Gourmet Family Feast</td>
+                  <td className="py-3 pr-4">Weekly</td>
+                  <td className="py-3 pr-4"><Badge variant="success" size="sm">Active</Badge></td>
+                  <td className="py-3 pr-4">1 / 4</td>
                   <td className="py-3 text-right">
                     <button className="text-xs text-[#1F3D2B] font-bold hover:underline cursor-pointer">
                       Manage
@@ -317,12 +317,12 @@ export const AdminDashboard: React.FC = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 font-bold text-[#1F3D2B]">Dr. Priya Nair</td>
-                  <td className="py-3 font-medium">Villa 12, Palm Grove</td>
-                  <td className="py-3">Vitality Greens & Roots</td>
-                  <td className="py-3">Weekly</td>
-                  <td className="py-3"><Badge variant="success" size="sm">Active</Badge></td>
-                  <td className="py-3">2 / 3</td>
+                  <td className="py-3 font-bold text-[#1F3D2B] pr-4">Dr. Priya Nair</td>
+                  <td className="py-3 font-medium pr-4">Villa 12, Palm Grove</td>
+                  <td className="py-3 pr-4">Vitality Greens & Roots</td>
+                  <td className="py-3 pr-4">Weekly</td>
+                  <td className="py-3 pr-4"><Badge variant="success" size="sm">Active</Badge></td>
+                  <td className="py-3 pr-4">2 / 3</td>
                   <td className="py-3 text-right">
                     <button className="text-xs text-[#1F3D2B] font-bold hover:underline cursor-pointer">
                       Manage
@@ -330,12 +330,12 @@ export const AdminDashboard: React.FC = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 font-bold text-[#1F3D2B]">Vikramaditya Roy</td>
-                  <td className="py-3 font-medium">Tower B - 402</td>
-                  <td className="py-3">Essential Fresh Harvest</td>
-                  <td className="py-3">Weekly</td>
-                  <td className="py-3"><Badge variant="warning" size="sm">Paused</Badge></td>
-                  <td className="py-3">0 / 2</td>
+                  <td className="py-3 font-bold text-[#1F3D2B] pr-4">Vikramaditya Roy</td>
+                  <td className="py-3 font-medium pr-4">Tower B - 402</td>
+                  <td className="py-3 pr-4">Essential Fresh Harvest</td>
+                  <td className="py-3 pr-4">Weekly</td>
+                  <td className="py-3 pr-4"><Badge variant="warning" size="sm">Paused</Badge></td>
+                  <td className="py-3 pr-4">0 / 2</td>
                   <td className="py-3 text-right">
                     <button className="text-xs text-[#1F3D2B] font-bold hover:underline cursor-pointer">
                       Manage
@@ -343,12 +343,12 @@ export const AdminDashboard: React.FC = () => {
                   </td>
                 </tr>
                 <tr>
-                  <td className="py-3 font-bold text-[#1F3D2B]">Ananya Iyer</td>
-                  <td className="py-3 font-medium">Villa 08, Palm Grove</td>
-                  <td className="py-3">Gourmet Family Feast</td>
-                  <td className="py-3">Weekly</td>
-                  <td className="py-3"><Badge variant="success" size="sm">Active</Badge></td>
-                  <td className="py-3">0 / 4</td>
+                  <td className="py-3 font-bold text-[#1F3D2B] pr-4">Ananya Iyer</td>
+                  <td className="py-3 font-medium pr-4">Villa 08, Palm Grove</td>
+                  <td className="py-3 pr-4">Gourmet Family Feast</td>
+                  <td className="py-3 pr-4">Weekly</td>
+                  <td className="py-3 pr-4"><Badge variant="success" size="sm">Active</Badge></td>
+                  <td className="py-3 pr-4">0 / 4</td>
                   <td className="py-3 text-right">
                     <button className="text-xs text-[#1F3D2B] font-bold hover:underline cursor-pointer">
                       Manage
@@ -364,28 +364,28 @@ export const AdminDashboard: React.FC = () => {
       {/* Tab: Inventory & Farm Stock */}
       {activeTab === 'inventory' && (
         <Card className="space-y-4" padding="lg">
-          <div className="flex items-center justify-between pb-3 border-b border-[#F0EBE1]">
-            <h3 className="font-serif text-lg font-bold text-[#1F3D2B]">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-3 border-b border-[#F0EBE1]">
+            <h3 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B]">
               Farm Stock & Swap Allocation
             </h3>
             <span className="text-xs text-[#8A847A]">{inventory.length} active produce types</span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             {inventory.map((item) => (
               <div
                 key={item.id}
                 className="p-3.5 bg-white border border-[#E8E3DA] rounded-xl flex items-center justify-between gap-3 text-xs"
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 min-w-0">
                   <img
                     src={item.imageUrl}
                     alt={item.name}
-                    className="w-12 h-12 rounded-lg object-cover border border-[#E0DBD1]"
+                    className="w-12 h-12 rounded-lg object-cover border border-[#E0DBD1] shrink-0"
                   />
-                  <div>
-                    <h4 className="font-bold text-[#1F3D2B]">{item.name}</h4>
-                    <p className="text-[11px] text-[#8A847A]">
+                  <div className="min-w-0">
+                    <h4 className="font-bold text-[#1F3D2B] truncate">{item.name}</h4>
+                    <p className="text-[11px] text-[#8A847A] truncate">
                       ₹{item.pricePerUnit} / {item.unit} • {item.supplierName.split(' ')[0]}
                     </p>
                     <div className="flex items-center gap-1.5 mt-1">
@@ -399,6 +399,7 @@ export const AdminDashboard: React.FC = () => {
                 <Button
                   size="sm"
                   variant="outline"
+                  className="shrink-0"
                   onClick={() => {
                     setStockEditItem(item);
                     setNewStockQty(item.stockAvailableKg);
@@ -415,15 +416,15 @@ export const AdminDashboard: React.FC = () => {
       {/* Tab: Complaints */}
       {activeTab === 'complaints' && (
         <Card className="space-y-4" padding="lg">
-          <h3 className="font-serif text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
+          <h3 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
             Resident Quality Issues & Refunds
           </h3>
 
           <div className="space-y-3">
             {complaints.map((c) => (
               <div key={c.id} className="p-4 bg-[#FAF8F5] rounded-xl border border-[#E8E3DA] space-y-3 text-xs">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-bold text-[#1F3D2B]">{c.customerName}</span>
                     <Badge variant="warning" size="sm">{c.issueType.replace('_', ' ')}</Badge>
                   </div>
@@ -442,6 +443,7 @@ export const AdminDashboard: React.FC = () => {
                   <Button
                     size="sm"
                     variant="primary"
+                    className="w-full sm:w-auto justify-center"
                     onClick={() => setSelectedComplaint(c)}
                   >
                     Resolve & Grant Wallet Credit
@@ -456,30 +458,30 @@ export const AdminDashboard: React.FC = () => {
       {/* Tab: Orders */}
       {activeTab === 'orders' && (
         <Card className="space-y-4" padding="lg">
-          <h3 className="font-serif text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
+          <h3 className="font-serif text-base sm:text-lg font-bold text-[#1F3D2B] pb-3 border-b border-[#F0EBE1]">
             Master Orders Log
           </h3>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs">
+          <div className="overflow-x-auto -mx-2 sm:mx-0 px-2 sm:px-0">
+            <table className="w-full text-left text-xs whitespace-nowrap">
               <thead>
                 <tr className="text-[#8A847A] border-b border-[#F0EBE1]">
-                  <th className="pb-3 font-semibold">Order #</th>
-                  <th className="pb-3 font-semibold">Resident</th>
-                  <th className="pb-3 font-semibold">Unit</th>
-                  <th className="pb-3 font-semibold">Delivery Date</th>
-                  <th className="pb-3 font-semibold">Total</th>
+                  <th className="pb-3 font-semibold pr-4">Order #</th>
+                  <th className="pb-3 font-semibold pr-4">Resident</th>
+                  <th className="pb-3 font-semibold pr-4">Unit</th>
+                  <th className="pb-3 font-semibold pr-4">Delivery Date</th>
+                  <th className="pb-3 font-semibold pr-4">Total</th>
                   <th className="pb-3 font-semibold">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#F4F1EC]">
                 {orders.map((o) => (
                   <tr key={o.id}>
-                    <td className="py-3 font-bold text-[#1F3D2B]">#{o.orderNumber}</td>
-                    <td className="py-3">{o.customerName}</td>
-                    <td className="py-3 font-medium">{o.gatedCommunityUnit}</td>
-                    <td className="py-3">{o.scheduledDeliveryDate}</td>
-                    <td className="py-3 font-bold text-[#1F3D2B]">₹{o.totalAmount}</td>
+                    <td className="py-3 font-bold text-[#1F3D2B] pr-4">#{o.orderNumber}</td>
+                    <td className="py-3 pr-4">{o.customerName}</td>
+                    <td className="py-3 font-medium pr-4">{o.gatedCommunityUnit}</td>
+                    <td className="py-3 pr-4">{o.scheduledDeliveryDate}</td>
+                    <td className="py-3 font-bold text-[#1F3D2B] pr-4">₹{o.totalAmount}</td>
                     <td className="py-3">
                       <Badge
                         variant={o.status === 'delivered' ? 'success' : o.status === 'out_for_delivery' ? 'warning' : 'secondary'}
@@ -520,15 +522,17 @@ export const AdminDashboard: React.FC = () => {
             />
           </div>
 
-          <div className="pt-3 border-t border-[#F0EBE1] flex justify-end gap-3">
+          <div className="pt-3 border-t border-[#F0EBE1] flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
             <Button
               variant="outline"
+              className="w-full sm:w-auto justify-center"
               onClick={() => setSelectedComplaint(null)}
             >
               Cancel
             </Button>
             <Button
               variant="primary"
+              className="w-full sm:w-auto justify-center"
               onClick={handleResolveComplaint}
             >
               Confirm & Resolve Ticket
@@ -556,15 +560,17 @@ export const AdminDashboard: React.FC = () => {
             />
           </div>
 
-          <div className="pt-3 border-t border-[#F0EBE1] flex justify-end gap-3">
+          <div className="pt-3 border-t border-[#F0EBE1] flex flex-col sm:flex-row justify-end gap-2 sm:gap-3">
             <Button
               variant="outline"
+              className="w-full sm:w-auto justify-center"
               onClick={() => setStockEditItem(null)}
             >
               Cancel
             </Button>
             <Button
               variant="primary"
+              className="w-full sm:w-auto justify-center"
               onClick={handleSaveStock}
             >
               Save Stock

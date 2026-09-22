@@ -59,15 +59,20 @@ interface DataContextType {
   // Inventory & Supplier actions
   addInventoryItem: (item: Omit<InventoryItem, 'id'>) => void;
   updateInventoryQuantity: (id: string, newQuantity: number) => void;
+  updateInventoryStock: (id: string, newQuantity: number) => void;
   
   // Complaints & Ratings
   addComplaint: (orderId: string, orderNumber: string, category: ComplaintCategory, description: string, userId: string, userName: string) => void;
+  createComplaint: (data: { orderId: string; userId: string; customerName: string; issueType?: any; description: string; photoUrl?: string }) => void;
   resolveComplaint: (complaintId: string, notes: string, status: 'resolved' | 'refunded') => void;
   addRating: (orderId: string, orderNumber: string, rating: number, feedback: string, tags: string[], userId: string, userName: string) => void;
+  submitRating: (data: { orderId: string; userId: string; customerName: string; freshnessScore: number; packagingScore: number; deliveryScore: number; comment: string; tags: string[] }) => void;
   
   // Notifications
   markNotificationAsRead: (id: string) => void;
-  markAllNotificationsAsRead: (userId: string) => void;
+  markNotificationRead: (id: string) => void;
+  markAllNotificationsAsRead: (userId?: string | any) => void;
+  markAllNotificationsRead: (userId?: string | any) => void;
   addNotification: (notification: Omit<Notification, 'id' | 'createdAt' | 'isRead'>) => void;
   
   resetToDefaults: () => void;
@@ -500,6 +505,41 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  const createComplaint = (data: {
+    orderId: string;
+    userId: string;
+    customerName: string;
+    issueType?: any;
+    description: string;
+    photoUrl?: string;
+  }) => {
+    const order = orders.find(o => o.id === data.orderId);
+    const orderNumber = order?.orderNumber || 'ORD-2026-001';
+    const newComplaint: Complaint = {
+      id: `cmp-${Date.now()}`,
+      orderId: data.orderId,
+      orderNumber,
+      userId: data.userId,
+      customerName: data.customerName,
+      userName: data.customerName,
+      category: (data.issueType as ComplaintCategory) || 'quality',
+      issueType: data.issueType || 'quality',
+      description: data.description,
+      photoUrl: data.photoUrl,
+      status: 'open',
+      createdAt: new Date().toISOString()
+    };
+    setComplaints([newComplaint, ...complaints]);
+    setOrders(orders.map(o => o.id === data.orderId ? { ...o, hasComplaint: true } : o));
+
+    addNotification({
+      userId: data.userId,
+      title: `Complaint Submitted (${orderNumber})`,
+      message: 'Our community care team has received your ticket and will resolve it within 2 hours.',
+      type: 'complaint'
+    });
+  };
+
   const resolveComplaint = (complaintId: string, resolutionNotes: string, status: 'resolved' | 'refunded') => {
     setComplaints(complaints.map(c => 
       c.id === complaintId 
@@ -523,8 +563,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       orderNumber,
       userId,
       userName,
+      customerName: userName,
       rating,
+      comment: writtenFeedback,
       writtenFeedback,
+      freshnessScore: rating,
+      packagingScore: rating,
+      deliveryScore: rating,
       tags,
       createdAt: new Date().toISOString()
     };
@@ -534,13 +579,69 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setOrders(orders.map(o => o.id === orderId ? { ...o, hasRating: true } : o));
   };
 
+  const submitRating = (data: {
+    orderId: string;
+    userId: string;
+    customerName: string;
+    freshnessScore: number;
+    packagingScore: number;
+    deliveryScore: number;
+    comment: string;
+    tags: string[];
+  }) => {
+    const order = orders.find(o => o.id === data.orderId);
+    const avgRating = Math.round((data.freshnessScore + data.packagingScore + data.deliveryScore) / 3);
+    const newRating: Rating = {
+      id: `rat-${Date.now()}`,
+      orderId: data.orderId,
+      orderNumber: order?.orderNumber || 'ORD-2026-001',
+      userId: data.userId,
+      customerName: data.customerName,
+      userName: data.customerName,
+      rating: avgRating,
+      freshnessScore: data.freshnessScore,
+      packagingScore: data.packagingScore,
+      deliveryScore: data.deliveryScore,
+      comment: data.comment,
+      writtenFeedback: data.comment,
+      tags: data.tags,
+      createdAt: new Date().toISOString()
+    };
+    setRatings([newRating, ...ratings]);
+    setOrders(orders.map(o => o.id === data.orderId ? { ...o, hasRating: true } : o));
+
+    addNotification({
+      userId: data.userId,
+      title: `Feedback Received (${order?.orderNumber || 'Recent Order'})`,
+      message: `Thank you for rating our delivery ${avgRating} stars! Your feedback helps local farmers improve quality.`,
+      type: 'general'
+    });
+  };
+
+  const updateInventoryStock = (id: string, newQuantity: number) => {
+    updateInventoryQuantity(id, newQuantity);
+  };
+
   // Notifications
   const markNotificationAsRead = (id: string) => {
     setNotifications(notifications.map(n => n.id === id ? { ...n, isRead: true } : n));
   };
 
-  const markAllNotificationsAsRead = (userId: string) => {
-    setNotifications(notifications.map(n => n.userId === userId ? { ...n, isRead: true } : n));
+  const markNotificationRead = (id: string) => {
+    markNotificationAsRead(id);
+  };
+
+  const markAllNotificationsAsRead = (userId?: string | any) => {
+    setNotifications(notifications.map(n => {
+      if (!userId || typeof userId !== 'string' || n.userId === userId) {
+        return { ...n, isRead: true };
+      }
+      return n;
+    }));
+  };
+
+  const markAllNotificationsRead = (userId?: string | any) => {
+    markAllNotificationsAsRead(userId);
   };
 
   const addNotification = (notif: Omit<Notification, 'id' | 'createdAt' | 'isRead'>) => {
@@ -591,11 +692,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         updateDeliveryStatus,
         addInventoryItem,
         updateInventoryQuantity,
+        updateInventoryStock,
         addComplaint,
+        createComplaint,
         resolveComplaint,
         addRating,
+        submitRating,
         markNotificationAsRead,
+        markNotificationRead,
         markAllNotificationsAsRead,
+        markAllNotificationsRead,
         addNotification,
         resetToDefaults
       }}

@@ -22,9 +22,10 @@ import { Badge } from './Badge';
 interface NavbarProps {
   currentPath: string;
   onNavigate: (path: string) => void;
+  onToggleSidebar?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
+export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onToggleSidebar }) => {
   const { currentUser, currentRole, isAuthenticated, logout, switchRole } = useAuth();
   const { notifications, markNotificationAsRead, subscription } = useData();
   
@@ -55,24 +56,24 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E8E3DA] transition-all">
       {/* Top Demo Bar for Easy Role Switching */}
-      <div className="bg-[#1F3D2B] text-[#F4F1EC] text-xs py-1.5 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 flex-wrap">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-2 h-2 rounded-full bg-[#A7C4A0] animate-pulse" />
-            <span className="font-medium text-[#F4F1EC]/90">
-              Gated Community MVP — Palm Grove Residency
+      <div className="bg-[#1F3D2B] text-[#F4F1EC] text-xs py-1.5 px-3 sm:px-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <span className="inline-block w-2 h-2 shrink-0 rounded-full bg-[#A7C4A0] animate-pulse" />
+            <span className="font-medium text-[#F4F1EC]/90 text-[11px] sm:text-xs truncate">
+              <span className="hidden sm:inline">Gated Community MVP — </span>Palm Grove Residency
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-[#A7C4A0] hidden sm:inline text-[11px]">Role view:</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <span className="text-[#A7C4A0] hidden md:inline text-[11px]">Role view:</span>
             <div className="relative">
               <button
                 onClick={() => setIsRoleDropdownOpen(!isRoleDropdownOpen)}
-                className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 px-2.5 py-0.5 rounded text-xs font-semibold text-white transition-colors cursor-pointer"
+                className="flex items-center gap-1 sm:gap-1.5 bg-white/10 hover:bg-white/20 px-2 sm:px-2.5 py-0.5 rounded text-[11px] sm:text-xs font-semibold text-white transition-colors cursor-pointer"
               >
                 {roleMeta[currentRole].icon}
-                <span>{roleMeta[currentRole].label}</span>
+                <span className="truncate max-w-[70px] sm:max-w-none">{roleMeta[currentRole].label}</span>
                 <ChevronDown className="w-3 h-3 opacity-70" />
               </button>
 
@@ -329,16 +330,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
               </div>
             </>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => onNavigate('/login')}
-                className="text-xs font-semibold px-3.5 py-2 text-[#1F3D2B] hover:bg-[#1F3D2B]/5 rounded-lg transition-colors cursor-pointer"
+                className="hidden sm:inline-flex text-xs font-semibold px-3 py-2 text-[#1F3D2B] hover:bg-[#1F3D2B]/5 rounded-lg transition-colors cursor-pointer"
               >
                 Sign In
               </button>
               <button
                 onClick={() => onNavigate('/register')}
-                className="text-xs font-bold px-4 py-2 bg-[#1F3D2B] text-white hover:bg-[#284f38] rounded-lg transition-colors cursor-pointer shadow-xs"
+                className="text-xs font-bold px-3 sm:px-4 py-2 bg-[#1F3D2B] text-white hover:bg-[#284f38] rounded-lg transition-colors cursor-pointer shadow-xs whitespace-nowrap"
               >
                 Get Started
               </button>
@@ -347,8 +348,15 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
 
           {/* Mobile menu trigger */}
           <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 md:hidden text-[#2E2E2E] hover:bg-[#F4F1EC] rounded-lg cursor-pointer"
+            onClick={() => {
+              if (onToggleSidebar && !isPublicPage) {
+                onToggleSidebar();
+              } else {
+                setIsMobileMenuOpen(!isMobileMenuOpen);
+              }
+            }}
+            className="p-2 md:hidden text-[#2E2E2E] hover:bg-[#F4F1EC] rounded-lg cursor-pointer shrink-0"
+            aria-label="Toggle navigation menu"
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -357,71 +365,136 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate }) => {
 
       {/* Mobile navigation drawer */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-[#E8E3DA] bg-white px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2">
+        <div className="md:hidden border-t border-[#E8E3DA] bg-white px-4 pt-3 pb-6 space-y-3 animate-in slide-in-from-top-2 max-h-[calc(100vh-6rem)] overflow-y-auto">
           {isPublicPage ? (
-            <>
+            <div className="space-y-1">
               <button
                 onClick={() => { setIsMobileMenuOpen(false); onNavigate('/'); }}
-                className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${currentPath === '/' ? 'bg-[#1F3D2B] text-white' : 'text-[#2E2E2E] hover:bg-[#FAF8F5]'}`}
               >
                 Home
               </button>
               <button
                 onClick={() => { setIsMobileMenuOpen(false); onNavigate('/how-it-works'); }}
-                className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${currentPath === '/how-it-works' ? 'bg-[#1F3D2B] text-white' : 'text-[#2E2E2E] hover:bg-[#FAF8F5]'}`}
               >
                 How It Works
               </button>
               <button
                 onClick={() => { setIsMobileMenuOpen(false); onNavigate('/plans'); }}
-                className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${currentPath === '/plans' ? 'bg-[#1F3D2B] text-white' : 'text-[#2E2E2E] hover:bg-[#FAF8F5]'}`}
               >
                 Subscription Plans
               </button>
               <button
                 onClick={() => { setIsMobileMenuOpen(false); onNavigate('/about'); }}
-                className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                className={`block w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium ${currentPath === '/about' ? 'bg-[#1F3D2B] text-white' : 'text-[#2E2E2E] hover:bg-[#FAF8F5]'}`}
               >
                 About Our Farms
               </button>
-            </>
+            </div>
           ) : (
-            <>
+            <div className="space-y-1">
+              <div className="px-3 py-1.5 bg-[#FAF8F5] rounded-lg border border-[#EBE6DC] mb-2">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A847A] block">
+                  Logged In As
+                </span>
+                <p className="text-xs font-bold text-[#1F3D2B] capitalize">
+                  {currentUser?.name} ({roleMeta[currentRole].label})
+                </p>
+              </div>
+
               <button
                 onClick={() => { setIsMobileMenuOpen(false); onNavigate(roleMeta[currentRole].defaultPath); }}
-                className="block w-full text-left py-2 text-sm font-bold text-[#1F3D2B]"
+                className="block w-full text-left px-3 py-2.5 rounded-lg text-sm font-bold text-[#1F3D2B] hover:bg-[#FAF8F5]"
               >
-                Role Dashboard ({roleMeta[currentRole].label})
+                Console Overview
               </button>
+
               {currentRole === 'customer' && (
                 <>
                   <button
                     onClick={() => { setIsMobileMenuOpen(false); onNavigate('/customer/basket'); }}
-                    className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
                   >
-                    My Basket Customization
+                    My Basket
                   </button>
                   <button
                     onClick={() => { setIsMobileMenuOpen(false); onNavigate('/customer/subscription'); }}
-                    className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
                   >
                     Manage Subscription
                   </button>
                   <button
                     onClick={() => { setIsMobileMenuOpen(false); onNavigate('/customer/orders'); }}
-                    className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
                   >
-                    Orders & Delivery Tracking
+                    Orders & Deliveries
+                  </button>
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); onNavigate('/customer/tracking'); }}
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
+                  >
+                    Live Delivery Tracking
                   </button>
                   <button
                     onClick={() => { setIsMobileMenuOpen(false); onNavigate('/customer/complaints'); }}
-                    className="block w-full text-left py-2 text-sm font-medium text-[#2E2E2E]"
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
                   >
-                    Quality Complaints
+                    Quality Feedback & Complaints
+                  </button>
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); onNavigate('/customer/ratings'); }}
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
+                  >
+                    Rate Recent Harvest
+                  </button>
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); onNavigate('/customer/profile'); }}
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
+                  >
+                    My Profile & Address
                   </button>
                 </>
               )}
-            </>
+
+              {currentRole === 'admin' && (
+                <>
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); onNavigate('/admin/subscribers'); }}
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
+                  >
+                    Subscribers Directory
+                  </button>
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); onNavigate('/admin/operations'); }}
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
+                  >
+                    Packing & Logistics
+                  </button>
+                  <button
+                    onClick={() => { setIsMobileMenuOpen(false); onNavigate('/admin/complaints'); }}
+                    className="block w-full text-left px-3 py-2 text-sm font-medium text-[#2E2E2E] hover:bg-[#FAF8F5]"
+                  >
+                    Quality Resolution
+                  </button>
+                </>
+              )}
+
+              <div className="pt-3 border-t border-[#E8E3DA] mt-3">
+                <button
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    logout();
+                    onNavigate('/');
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 text-center text-sm font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </button>
+              </div>
+            </div>
           )}
 
           {!isAuthenticated && (

@@ -24,9 +24,11 @@ import { useData } from '../../context/DataContext';
 interface SidebarProps {
   currentPath: string;
   onNavigate: (path: string) => void;
+  className?: string;
+  isMobile?: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate, className = '', isMobile = false }) => {
   const { currentRole, currentUser } = useAuth();
   const { complaints, notifications } = useData();
 
@@ -87,7 +89,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath, onNavigate }) => 
   const items = navMap[currentRole] || customerNav;
 
   return (
-    <aside className="w-64 shrink-0 hidden lg:block bg-white border-r border-[#E8E3DA] min-h-[calc(100vh-6.5rem)] p-4">
+    <aside className={isMobile ? `w-full bg-white p-4 ${className}` : `w-64 shrink-0 hidden lg:block bg-white border-r border-[#E8E3DA] min-h-[calc(100vh-6.5rem)] p-4 ${className}`}>
       <div className="mb-4 px-3 py-2 bg-[#FAF8F5] rounded-xl border border-[#EBE6DC]">
         <span className="text-[11px] font-bold uppercase tracking-wider text-[#8A847A] block">
           Current Workspace
