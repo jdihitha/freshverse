@@ -1,24 +1,36 @@
 import { createClient } from '@supabase/supabase-js';
 
-// Resolve Supabase URL and Anon Key from Vite environment or Node process
-const metaEnv = typeof import.meta !== 'undefined' ? (import.meta as any).env : undefined;
-const procEnv = typeof process !== 'undefined' ? process.env : undefined;
+// Resolve Supabase URL and Anon Key from Vite environment variables
+// Direct static property accesses ensure Vite compiler statically replaces them at build time
+const rawSupabaseUrl: string = (
+  import.meta.env.VITE_SUPABASE_URL ||
+  import.meta.env.SUPABASE_URL ||
+  import.meta.env.NEXT_PUBLIC_SUPABASE_URL ||
+  (typeof window !== 'undefined' && ((window as any).__SUPABASE_URL__ || (window as any).VITE_SUPABASE_URL)) ||
+  ''
+);
 
-const rawSupabaseUrl: string =
-  metaEnv?.VITE_SUPABASE_URL ||
-  metaEnv?.SUPABASE_URL ||
-  procEnv?.VITE_SUPABASE_URL ||
-  procEnv?.SUPABASE_URL ||
-  '';
+const rawSupabaseAnonKey: string = (
+  import.meta.env.VITE_SUPABASE_ANON_KEY ||
+  import.meta.env.SUPABASE_ANON_KEY ||
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.SUPABASE_PUBLISHABLE_KEY ||
+  import.meta.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  (typeof window !== 'undefined' && ((window as any).__SUPABASE_ANON_KEY__ || (window as any).VITE_SUPABASE_ANON_KEY)) ||
+  ''
+);
 
-const rawSupabaseAnonKey: string =
-  metaEnv?.VITE_SUPABASE_ANON_KEY ||
-  metaEnv?.SUPABASE_ANON_KEY ||
-  procEnv?.VITE_SUPABASE_ANON_KEY ||
-  procEnv?.SUPABASE_ANON_KEY ||
-  '';
+// Normalize Supabase URL: ensure http/https prefix and trim trailing slashes
+function formatSupabaseUrl(url: string): string {
+  const trimmed = (url || '').trim().replace(/\/+$/, '');
+  if (!trimmed) return '';
+  if (!/^https?:\/\//i.test(trimmed)) {
+    return `https://${trimmed}`;
+  }
+  return trimmed;
+}
 
-export const supabaseUrl: string = (rawSupabaseUrl || '').trim().replace(/\/+$/, '');
+export const supabaseUrl: string = formatSupabaseUrl(rawSupabaseUrl);
 export const supabaseAnonKey: string = (rawSupabaseAnonKey || '').trim();
 
 export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
@@ -282,12 +294,20 @@ export const supabase = isSupabaseConfigured
       auth: {
         persistSession: true,
         autoRefreshToken: true,
+        detectSessionInUrl: true,
       },
       global: {
         fetch: customSupabaseFetch,
       },
     })
   : null;
+
+/**
+ * Returns the initialized Supabase client singleton
+ */
+export function getSupabaseClient() {
+  return supabase;
+}
 
 export interface ConnectionStatus {
   connected: boolean;

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 import { Session, User as SupabaseAuthUser } from '@supabase/supabase-js';
 import { User, UserRole } from '../types';
 import { INITIAL_USERS } from '../data/mockData';
-import { supabase, isSupabaseConfigured, getSupabaseConfigurationError } from '../lib/supabase';
+import { supabase, isSupabaseConfigured, getSupabaseConfigurationError, getSupabaseClient } from '../lib/supabase';
 
 export interface AuthContextType {
   currentUser: User | null;
@@ -268,14 +268,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: false, error: 'Password is required' };
     }
 
-    if (!isSupabaseConfigured || !supabase) {
+    const client = getSupabaseClient() || supabase;
+    if (!isSupabaseConfigured || !client) {
+      console.warn('[Supabase Auth] Unable to connect: client not configured. Ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set.');
       return { success: false, error: 'Unable to connect to authentication service' };
     }
 
     console.log('[Supabase Auth] Calling signInWithPassword for:', cleanEmail);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await client.auth.signInWithPassword({
         email: cleanEmail,
         password
       });
@@ -431,7 +433,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return { success: false, error: 'Please enter your delivery address.' };
     }
 
-    if (!isSupabaseConfigured || !supabase) {
+    const client = getSupabaseClient() || supabase;
+    if (!isSupabaseConfigured || !client) {
       const configError = getSupabaseConfigurationError() || 'Supabase authentication is not configured.';
       return { success: false, error: configError };
     }
@@ -443,7 +446,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log('[Supabase Auth] Calling signUp for:', cleanEmail);
 
     try {
-      const { data: authData, error: authError } = await supabase.auth.signUp({
+      const { data: authData, error: authError } = await client.auth.signUp({
         email: cleanEmail,
         password: data.password,
         options: {
