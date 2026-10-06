@@ -398,7 +398,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               size="lg"
               variant="primary"
               className="w-full sm:w-auto justify-center"
-              onClick={() => onNavigate('/register')}
+              onClick={() => onNavigate('/customer/dashboard')}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
               Get Started

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { CheckCircle2, ArrowRight, Sparkles, Sliders, ShieldCheck } from 'lucide-react';
 import { useData } from '../../context/DataContext';
-import { useAuth } from '../../context/AuthContext';
 import { Card } from '../../components/common/Card';
 import { Button } from '../../components/common/Button';
 import { Badge } from '../../components/common/Badge';
@@ -12,17 +11,12 @@ interface PlansPageProps {
 
 export const PlansPage: React.FC<PlansPageProps> = ({ onNavigate }) => {
   const { plans, changeSubscriptionPlan } = useData();
-  const { isAuthenticated } = useAuth();
   const [selectedPlanId, setSelectedPlanId] = useState<string>(plans[1]?.id || plans[0]?.id);
 
   const handleSelectPlan = (planId: string) => {
     setSelectedPlanId(planId);
     changeSubscriptionPlan(planId);
-    if (isAuthenticated) {
-      onNavigate('/customer/basket');
-    } else {
-      onNavigate('/register');
-    }
+    onNavigate('/customer/basket');
   };
 
   return (

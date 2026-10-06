@@ -6,7 +6,6 @@ import {
   User as UserIcon, 
   Menu, 
   X, 
-  LogOut, 
   ChevronDown, 
   Shield, 
   Package, 
@@ -51,7 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onToggl
     onNavigate(roleMeta[role].defaultPath);
   };
 
-  const isPublicPage = ['/', '/plans', '/how-it-works', '/about', '/login', '/register'].includes(currentPath);
+  const isPublicPage = ['/welcome', '/landing', '/plans', '/how-it-works', '/about'].includes(currentPath);
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-[#E8E3DA] transition-all">
@@ -207,9 +206,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onToggl
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
-          {isAuthenticated ? (
-            <>
-              {/* Basket quick button for customer */}
+          {/* Basket quick button for customer */}
               {currentRole === 'customer' && (
                 <button
                   onClick={() => onNavigate('/customer/basket')}
@@ -316,35 +313,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onToggl
                     </p>
                   </div>
                 </button>
-
-                <button
-                  onClick={() => {
-                    logout();
-                    onNavigate('/');
-                  }}
-                  className="p-2 text-[#8A847A] hover:text-rose-700 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
-                  title="Log out"
-                >
-                  <LogOut className="w-4 h-4" />
-                </button>
               </div>
-            </>
-          ) : (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <button
-                onClick={() => onNavigate('/login')}
-                className="hidden sm:inline-flex text-xs font-semibold px-3 py-2 text-[#1F3D2B] hover:bg-[#1F3D2B]/5 rounded-lg transition-colors cursor-pointer"
-              >
-                Sign In
-              </button>
-              <button
-                onClick={() => onNavigate('/register')}
-                className="text-xs font-bold px-3 sm:px-4 py-2 bg-[#1F3D2B] text-white hover:bg-[#284f38] rounded-lg transition-colors cursor-pointer shadow-xs whitespace-nowrap"
-              >
-                Get Started
-              </button>
-            </div>
-          )}
 
           {/* Mobile menu trigger */}
           <button
@@ -397,7 +366,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onToggl
             <div className="space-y-1">
               <div className="px-3 py-1.5 bg-[#FAF8F5] rounded-lg border border-[#EBE6DC] mb-2">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A847A] block">
-                  Logged In As
+                  Active Profile
                 </span>
                 <p className="text-xs font-bold text-[#1F3D2B] capitalize">
                   {currentUser?.name} ({roleMeta[currentRole].label})
@@ -480,37 +449,6 @@ export const Navbar: React.FC<NavbarProps> = ({ currentPath, onNavigate, onToggl
                   </button>
                 </>
               )}
-
-              <div className="pt-3 border-t border-[#E8E3DA] mt-3">
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    logout();
-                    onNavigate('/');
-                  }}
-                  className="w-full flex items-center justify-center gap-2 py-2.5 text-center text-sm font-semibold text-rose-700 bg-rose-50 hover:bg-rose-100 rounded-lg"
-                >
-                  <LogOut className="w-4 h-4" />
-                  Sign Out
-                </button>
-              </div>
-            </div>
-          )}
-
-          {!isAuthenticated && (
-            <div className="pt-2 flex flex-col gap-2">
-              <button
-                onClick={() => { setIsMobileMenuOpen(false); onNavigate('/login'); }}
-                className="w-full py-2.5 text-center text-sm font-semibold border border-[#1F3D2B] text-[#1F3D2B] rounded-lg"
-              >
-                Sign In
-              </button>
-              <button
-                onClick={() => { setIsMobileMenuOpen(false); onNavigate('/register'); }}
-                className="w-full py-2.5 text-center text-sm font-semibold bg-[#1F3D2B] text-white rounded-lg"
-              >
-                Subscribe Now
-              </button>
             </div>
           )}
         </div>
